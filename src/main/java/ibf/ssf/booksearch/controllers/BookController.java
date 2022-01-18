@@ -20,7 +20,7 @@ import ibf.ssf.booksearch.services.BookService;
     produces = {MediaType.TEXT_HTML_VALUE}
 )
 public class BookController {
-    private final Logger log = Logger.getLogger(BookController.class.getName());
+    private final Logger logger = Logger.getLogger(BookController.class.getName());
 
     @Autowired
     private BookService bookService;
