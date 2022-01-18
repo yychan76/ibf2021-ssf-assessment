@@ -10,6 +10,8 @@ public class Book {
     private String title;
     private String description;
     private String excerpt;
+    private String coverId;
+    private String coverUrl;
     private boolean cached = false;
 
     public Book () {}
@@ -55,6 +57,21 @@ public class Book {
         this.excerpt = excerpt;
     }
 
+    public String getCoverId() {
+        return this.coverId;
+    }
+
+    public void setCoverId(String coverId) {
+        this.coverId = coverId;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public String getCoverUrl() {
+        return OPENLIBRARY_COVER_IMAGE_FORMAT_STRING.formatted(this.coverId);
+    }
 
     public boolean isCached() {
         return this.cached;
@@ -77,15 +94,17 @@ public class Book {
         // these fields are not populated until the book details page is requested
         book.setDescription(jsonObj.get(DESCRIPTION_FIELD) != null ? jsonObj.getString(DESCRIPTION_FIELD) : "");
         book.setExcerpt(jsonObj.get(EXCERPT_FIELD) != null ? jsonObj.getString(EXCERPT_FIELD) : "");
+        book.setCoverId(jsonObj.get(COVER_ID_FIELD) != null ? jsonObj.getString(COVER_ID_FIELD) : "");
         return book;
     }
 
     public JsonObject toJson() {
         return Json.createObjectBuilder()
-                    .add("works_id", getId() != null ? getId() : "")
-                    .add("title", getTitle() != null ? getTitle() : "")
-                    .add("description", getDescription() != null ? getDescription() : "")
-                    .add("excerpt", getExcerpt() != null ? getExcerpt() : "")
+                    .add(WORKS_ID_FIELD, getId() != null ? getId() : "")
+                    .add(SEARCH_TITLE_FIELD, getTitle() != null ? getTitle() : "")
+                    .add(DESCRIPTION_FIELD, getDescription() != null ? getDescription() : "")
+                    .add(EXCERPT_FIELD, getExcerpt() != null ? getExcerpt() : "")
+                    .add(COVER_ID_FIELD, getCoverId() != null ? getCoverId() : "")
                     .build();
     }
 

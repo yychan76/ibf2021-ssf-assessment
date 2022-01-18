@@ -128,6 +128,12 @@ public class BookService {
                 // get the first excerpt
                 book.setExcerpt(excerpts.getJsonObject(0).getString("excerpt"));
             }
+            if (result.containsKey("covers")) {
+                JsonArray covers = result.getJsonArray("covers");
+                // logger.info(covers.toString());
+                // logger.info(covers.get(0).toString());
+                book.setCoverId(covers.get(0).toString());
+            }
 
             // cache the result to redis
             bookRepo.save(worksId, book);
@@ -147,12 +153,15 @@ public class BookService {
     }
 
     private String getDescriptionText(JsonObject json) {
-        try {
-            return json.getString("description");
-        } catch (ClassCastException e) {
-            // the value is actually a nested JsonObject
-            JsonObject descObj = json.getJsonObject("description");
-            return descObj.getString("value");
+        if (json.containsKey("excerpts")) {
+            try {
+                return json.getString("description");
+            } catch (ClassCastException e) {
+                // the value is actually a nested JsonObject
+                JsonObject descObj = json.getJsonObject("description");
+                return descObj.getString("value");
+            }
         }
+        return "";
     }
 }

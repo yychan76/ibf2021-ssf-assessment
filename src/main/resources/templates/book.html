@@ -8,8 +8,12 @@
     <title>Book Details</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
+            <div class="col">
+                <img th:src="${book.coverUrl}" alt="${book.title}">
+            </div>
+
             <div class="col">
                 <table class="table table-borderless">
                     <tr>
@@ -18,11 +22,11 @@
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td th:text="${book.description}"></td>
+                        <td th:text="${#strings.isEmpty(book.description) ? 'Not provided' : book.description}" th:style="${#strings.isEmpty(book.description)} ? 'color: silver;'"></td>
                     </tr>
                     <tr>
                         <td>Excerpt</td>
-                        <td th:text="${book.excerpt}"></td>
+                        <td th:text="${#strings.isEmpty(book.excerpt) ? 'Not provided' : book.excerpt}"  th:style="${#strings.isEmpty(book.excerpt)} ? 'color: silver;'"></td>
                     </tr>
                     <tr>
                         <td>Cached</td>
@@ -30,7 +34,7 @@
                     </tr>
 
                     <tr>
-                        <td>
+                        <td colspan="2" style="text-align:center">
                             <a href="/">
                                 <button class="btn btn-primary">
                                     Back

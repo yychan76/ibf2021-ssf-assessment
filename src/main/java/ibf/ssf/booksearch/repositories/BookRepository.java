@@ -35,6 +35,7 @@ public class BookRepository {
     public Optional<Book> get(String worksId) {
         Optional<String> opt = Optional.ofNullable(redisTemplate.opsForValue().get(worksId));
         if (opt.isPresent()) {
+            logger.info("Reading from redis cache: %s".formatted(opt.get().toString()));
             JsonObject jsonObj = parseJsonObject(opt.get());
             return Optional.of(Book.create(jsonObj));
         }
