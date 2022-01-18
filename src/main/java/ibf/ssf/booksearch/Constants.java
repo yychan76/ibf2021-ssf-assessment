@@ -11,7 +11,9 @@ public class Constants {
     public static final String SEARCH_ID_FIELD = "key";
     public static final String SEARCH_TITLE_FIELD = "title";
     public static final String DESCRIPTION_FIELD = "description";
+    public static final String EXCERPTS_ARRAY_FIELD = "excerpts";
     public static final String EXCERPT_FIELD = "excerpt";
+    public static final String COVERS_FIELD = "covers";
     // these are our custom fields
     public static final String COVER_ID_FIELD = "cover_id";
     public static final String WORKS_ID_FIELD = "works_id";

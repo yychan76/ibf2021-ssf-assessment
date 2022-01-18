@@ -119,14 +119,15 @@ public class BookService {
             final JsonObject result = reader.readObject();
             Book book = new Book(worksId);
             book.setTitle(result.getString("title"));
-            book.setDescription(getDescriptionText(result));
+            book.setDescription(unpackNestedJsonValue(DESCRIPTION_FIELD, result));
             // not all books have excerpts
-            if (result.containsKey("excerpts")) {
+            if (result.containsKey(EXCERPTS_ARRAY_FIELD)) {
                 // excerpts is an json array
-                JsonArray excerpts = result.getJsonArray("excerpts");
-                logger.info(excerpts.toString());
+                JsonArray excerpts = result.getJsonArray(EXCERPTS_ARRAY_FIELD);
+                logger.info("Excerpts: %s".formatted(excerpts.toString()));
                 // get the first excerpt
-                book.setExcerpt(excerpts.getJsonObject(0).getString("excerpt"));
+                JsonObject firstExcerpt = excerpts.getJsonObject(0);
+                book.setExcerpt(unpackNestedJsonValue(EXCERPT_FIELD, firstExcerpt));
             }
             if (result.containsKey("covers")) {
                 JsonArray covers = result.getJsonArray("covers");
@@ -152,13 +153,15 @@ public class BookService {
         return String.join("+", title.trim().split("\\s+"));
     }
 
-    private String getDescriptionText(JsonObject json) {
-        if (json.containsKey("description")) {
+    private String unpackNestedJsonValue(String key, JsonObject json) {
+        // some text values in the json object are themselves json objects
+        // these seem to have a key named "value" that contains the actual text
+        if (json.containsKey(key)) {
             try {
-                return json.getString("description");
+                return json.getString(key);
             } catch (ClassCastException e) {
                 // the value is actually a nested JsonObject
-                JsonObject descObj = json.getJsonObject("description");
+                JsonObject descObj = json.getJsonObject(key);
                 return descObj.getString("value");
             }
         }
