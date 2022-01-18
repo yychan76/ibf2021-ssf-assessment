@@ -153,7 +153,7 @@ public class BookService {
     }
 
     private String getDescriptionText(JsonObject json) {
-        if (json.containsKey("excerpts")) {
+        if (json.containsKey("description")) {
             try {
                 return json.getString("description");
             } catch (ClassCastException e) {
