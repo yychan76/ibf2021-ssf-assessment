@@ -14,6 +14,23 @@
                 <h1>Search result for '<span th:text="${book}"></span>'</h1>
             </div>
         </div>
+        <div class="row" th:if="${#lists.isEmpty(results)}">
+            <div class="col">
+                <h2 class="lead">Your search found no matching titles.</h2>
+            </div>
+        </div>
+        <div class="row" th:each="book, iStat :${results}">
+            <div class="col">
+                <h2 class="lead"><a th:href="${'book/' + book.id}"><span th:text="${(iStat.index + 1) + '.  ' + book.title}"></span></a> </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="/">
+                    <button class="btn btn-primary">Back</button>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
