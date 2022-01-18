@@ -8,6 +8,8 @@ public class Constants {
     public static final int SEARCH_RESULT_LIMIT = 20;
     public static final String SEARCH_ID_FIELD = "key";
     public static final String SEARCH_TITLE_FIELD = "title";
+    public static final String DESCRIPTION_FIELD = "description";
+    public static final String EXCERPT_FIELD = "excerpt";
     public static final String SEARCH_FIELDS = String.join(",", Arrays.asList(SEARCH_ID_FIELD, SEARCH_TITLE_FIELD));
-
+    public static final long REDIS_CACHE_DURATION_MINUTES = 10L;
 }

@@ -1,5 +1,6 @@
 package ibf.ssf.booksearch.models;
 
+import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
 import static ibf.ssf.booksearch.Constants.*;
@@ -9,6 +10,7 @@ public class Book {
     private String title;
     private String description;
     private String excerpt;
+    private boolean cached = false;
 
     public Book () {}
 
@@ -53,11 +55,38 @@ public class Book {
         this.excerpt = excerpt;
     }
 
+
+    public boolean isCached() {
+        return this.cached;
+    }
+
+    public boolean getCached() {
+        return this.cached;
+    }
+
+    public void setCached(boolean cached) {
+        this.cached = cached;
+    }
+
+
     public static Book create(JsonObject jsonObj) {
         Book book = new Book();
-        book.setId(cleanId(jsonObj.getString(SEARCH_ID_FIELD)));
-        book.setTitle(jsonObj.getString(SEARCH_TITLE_FIELD));
+        // these should be populated when the search results page is requested
+        book.setId(cleanId(jsonObj.get(SEARCH_ID_FIELD) != null ? jsonObj.getString(SEARCH_ID_FIELD) : ""));
+        book.setTitle(jsonObj.get(SEARCH_TITLE_FIELD) != null ? jsonObj.getString(SEARCH_TITLE_FIELD) : "");
+        // these fields are not populated until the book details page is requested
+        book.setDescription(jsonObj.get(DESCRIPTION_FIELD) != null ? jsonObj.getString(DESCRIPTION_FIELD) : "");
+        book.setExcerpt(jsonObj.get(EXCERPT_FIELD) != null ? jsonObj.getString(EXCERPT_FIELD) : "");
         return book;
+    }
+
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+                    .add("works_id", getId() != null ? getId() : "")
+                    .add("title", getTitle() != null ? getTitle() : "")
+                    .add("description", getDescription() != null ? getDescription() : "")
+                    .add("excerpt", getExcerpt() != null ? getExcerpt() : "")
+                    .build();
     }
 
     private static String cleanId(String id) {
