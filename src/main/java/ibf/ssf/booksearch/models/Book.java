@@ -33,9 +33,15 @@ public class Book {
 
     public static Book create(JsonObject jsonObj) {
         Book book = new Book();
-        book.setId(jsonObj.getString(SEARCH_ID_FIELD));
+        book.setId(cleanId(jsonObj.getString(SEARCH_ID_FIELD)));
         book.setTitle(jsonObj.getString(SEARCH_TITLE_FIELD));
         return book;
+    }
+
+    private static String cleanId(String id) {
+        // the openlibrary api returns "key": "/works/OL27448W"
+        // but we only need the <works_id> part without the works path
+        return id.replace("/works/", "");
     }
 
 }
