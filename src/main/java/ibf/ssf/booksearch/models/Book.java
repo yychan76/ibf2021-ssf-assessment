@@ -7,8 +7,14 @@ import static ibf.ssf.booksearch.Constants.*;
 public class Book {
     private String id;
     private String title;
+    private String description;
+    private String excerpt;
 
     public Book () {}
+
+    public Book(String id) {
+        this.id = id;
+    }
 
     public Book(String id, String title) {
         this.id = id;
@@ -29,6 +35,22 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getExcerpt() {
+        return this.excerpt;
+    }
+
+    public void setExcerpt(String excerpt) {
+        this.excerpt = excerpt;
     }
 
     public static Book create(JsonObject jsonObj) {
